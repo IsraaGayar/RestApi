@@ -25,7 +25,7 @@ SECRET_KEY = '1@$2p+*4td-kdh78l8shz#qpjmzs0$78!m+h(3(ecb!pb-(^q*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1','localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
+    "corsheaders",
 
     'rest_framework',
 
@@ -46,6 +47,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,7 +131,18 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication'],
+'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+'PAGE_SIZE': 10
 }
 
 
 AUTH_USER_MODEL='pinterest.User'
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_REGEX_WHITELIST = (
+    'http://localhost:3000',
+    'https?\://myapp\.appspot\.com\/?',
+    'https?\://frontend-dot-myapp\.appspot\.com\/?',
+)

@@ -16,13 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
-import pinterest
+import pinterest.api.v1.views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('pinterest',include('pinterest.api.v1.urls'))
+    path('admin/', admin.site.urls,name= 'admin'),
+    path('',include('pinterest.api.v1.urls'),name='pinterest'),
+    path('', pinterest.api.v1.views.api_root, name='pinterest')
+
 ]
 
-# urlpatterns += [
-#     path('api-auth/',include('rest_framework.urls'))
-# ]
+urlpatterns += [
+    path('api-auth/',include('rest_framework.urls'))
+]

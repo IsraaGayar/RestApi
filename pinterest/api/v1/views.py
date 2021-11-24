@@ -3,8 +3,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from pinterest.models import Pin,User
-from .serializers import PinSerializer,UserSerializer
+from .serializers import PinSerializer,UserSerializer,PinListSerializer
 from rest_framework import permissions
+from rest_framework.reverse import reverse
+
+@api_view(['GET'])
+def api_root(request):
+    return Response({
+        'users': reverse('userlist',request=request),
+        'Pins': reverse('pinlist', request=request),
+    })
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
@@ -14,7 +22,18 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class PinList(generics.ListCreateAPIView):
+
+
+class PinList(generics.ListAPIView):
+
+    # queryset = Pin.objects.filter(owner__username='israa1').all()
+    queryset = Pin.objects.all()
+    serializer_class = PinListSerializer
+    permission_classes=[permissions.IsAuthenticatedOrReadOnly]
+
+
+
+class PinCreate(generics.CreateAPIView):
 
     queryset = Pin.objects.all()
     serializer_class = PinSerializer
